@@ -1,9 +1,9 @@
 """Application settings and configuration."""
 
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-from pydantic import BaseSettings
+from pydantic import AnyHttpUrl, BaseSettings
 
 
 class OpenApiInfo(BaseSettings):
@@ -24,10 +24,12 @@ class Settings(BaseSettings):
     """Root application settings.
 
     Attributes:
+        cors_origins: A list of trusted URLs for cross-origin requests.
         env: The runtime environment.
         openapi: An OpenApiInfo object.
     """
 
+    cors_origins: List[AnyHttpUrl] = []
     env: Literal["dev", "prod"] = "dev"
     openapi: OpenApiInfo = OpenApiInfo()
 
