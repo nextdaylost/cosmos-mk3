@@ -33,6 +33,16 @@ poetry shell
 > working from an interactive shell session. If you are not, you will need to
 > prefix those commands with `poetry run`.
 
+### Serving
+
+Start the Uvicorn process:
+
+```shell
+uvicorn cosmos.main:main \
+--factory \
+--reload
+```
+
 ### Testing
 
 Run the test suite:
