@@ -3,7 +3,10 @@
 
 from typing import List, Literal, Optional
 
-from pydantic import AnyHttpUrl, BaseSettings
+from pydantic import AnyHttpUrl, BaseSettings, constr
+
+
+_api_prefix = constr(regex=r"^$|^/[a-zA-Z0-9\-\.\_\~]+$")
 
 
 class OpenApiInfo(BaseSettings):
@@ -24,11 +27,13 @@ class Settings(BaseSettings):
     """Root application settings.
 
     Attributes:
+        api_prefix: The API path prefix.
         cors_origins: A list of trusted URLs for cross-origin requests.
         env: The runtime environment.
         openapi: An OpenApiInfo object.
     """
 
+    api_prefix: _api_prefix = ""
     cors_origins: List[AnyHttpUrl] = []
     env: Literal["dev", "prod"] = "dev"
     openapi: OpenApiInfo = OpenApiInfo()

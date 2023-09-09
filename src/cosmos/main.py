@@ -1,7 +1,7 @@
 """Application entrypoint."""
 
 
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from cosmos.config import settings
@@ -16,6 +16,7 @@ def main() -> FastAPI:
     """
     app = FastAPI(
         description=settings.openapi.description,
+        openapi_url=f"{settings.api_prefix}/openapi.json",
         summary=settings.openapi.summary,
         title=settings.openapi.title,
         version=__version__,
@@ -29,5 +30,9 @@ def main() -> FastAPI:
             allow_methods=["*"],
             allow_origins=[str(origin) for origin in settings.cors_origins],
         )
+
+    router = APIRouter(prefix=settings.api_prefix)
+
+    app.include_router(router)
 
     return app
