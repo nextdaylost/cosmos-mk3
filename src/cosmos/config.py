@@ -3,7 +3,7 @@
 
 from typing import List, Literal, Optional
 
-from pydantic import AnyHttpUrl, BaseSettings, constr
+from pydantic import AnyHttpUrl, BaseSettings, constr, PostgresDsn
 
 
 _api_prefix = constr(regex=r"^$|^/[a-zA-Z0-9\-\.\_\~]+$")
@@ -31,12 +31,14 @@ class Settings(BaseSettings):
         cors_origins: A list of trusted URLs for cross-origin requests.
         env: The runtime environment.
         openapi: An OpenApiInfo object.
+        sqlalchemy_url:
     """
 
     api_prefix: _api_prefix = ""
     cors_origins: List[AnyHttpUrl] = []
     env: Literal["dev", "prod"] = "dev"
     openapi: OpenApiInfo = OpenApiInfo()
+    sqlalchemy_url: PostgresDsn | Literal["sqlite:///cosmos.db"] = "sqlite:///cosmos.db"
 
     class Config:
         """Pydantic BaseSettings-specific configuration.
