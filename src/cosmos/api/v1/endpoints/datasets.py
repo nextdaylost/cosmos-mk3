@@ -11,6 +11,7 @@ from cosmos.core.models.dataset import (
 )
 from cosmos.db.exceptions import NotFoundException
 from cosmos.repositories.dataset import DatasetRepositoryInjectable
+from cosmos.utils.plugins import dataset_plugins
 
 
 router = APIRouter(prefix="/datasets")
@@ -82,3 +83,9 @@ def update_dataset(
         dataset_repository: Dataset repository.
     """
     return dataset_repository.update_by_id(dataset_id, dataset_dto)
+
+
+for plugin_name, plugin_module in dataset_plugins.items():
+    # print(plugin_name)
+    # print(dir(plugin_module))
+    router.include_router(plugin_module.router)
